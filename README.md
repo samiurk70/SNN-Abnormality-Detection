@@ -150,9 +150,13 @@ Preprint: `[arXiv link — forthcoming]`
 ## Author
 
 **Samiur Rahman Khan**
+
 MSc Data Science (Distinction) — Middlesex University London
+
 MSc Computer Network & Architecture (Summa Cum Laude) - American International University Bangladesh
+
 [scholar.google.co.uk/citations?user=ddQa7D4AAAAJ](https://scholar.google.co.uk/citations?user=ddQa7D4AAAAJ&hl)
+
 [linkedin.com/in/samiurk70](https://linkedin.com/in/samiurk70)
 
 ---
