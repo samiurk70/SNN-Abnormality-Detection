@@ -8,7 +8,7 @@
 
 ## Abstract
 
-Conventional deep learning-based anomaly detectors rely on continuous-valued activations, incurring substantial multiply-accumulate (MAC) operations that are prohibitive for edge deployment. This project investigates whether **Spiking Neural Networks (SNNs)** — which communicate via discrete binary spike events rather than continuous activations — can approximate the detection performance of standard autoencoder-based anomaly detectors while delivering a meaningful reduction in computational cost.
+Conventional deep learning-based anomaly detectors rely on continuous-valued activations, incurring substantial multiply-accumulate (MAC) operations that are prohibitive for edge deployment. This project investigates whether **Spiking Neural Networks (SNNs)** which communicate via discrete binary spike events rather than continuous activations can approximate the detection performance of standard autoencoder-based anomaly detectors while delivering a meaningful reduction in computational cost.
 
 We conduct a systematic **energy-accuracy tradeoff analysis** comparing an SNN against a standard deep autoencoder across three benchmark anomaly detection datasets, measuring inference FLOPs, latency, and F1-score under equivalent training conditions. Findings are formalised as a Pareto optimisation problem and discussed in the accompanying white paper.
 
