@@ -54,7 +54,7 @@ def run_experiment(ds_name, epochs=50, lr=1e-3, batch_size=64, T=8, device='cpu'
     torch.save(snn.state_dict(), f"results/{ds_name}/snn_checkpoint.pt")
     torch.save(ann.state_dict(), f"results/{ds_name}/ann_checkpoint.pt")
 
-    return full_comparison(snn, ann, train_loader, test_loader, y_test, device)
+    return full_comparison(snn, ann, train_loader, test_loader, y_test, device, save_dir=f"results/{ds_name}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

@@ -2,7 +2,7 @@
 Computes reconstruction errors, anomaly scores, F1, AUC-ROC,
 latency, SynOps vs FLOPs, and energy estimates (nJ/sample).
 """
-import time, torch, numpy as np
+import time, torch, numpy as np, os
 from sklearn.metrics import f1_score, roc_auc_score
 import matplotlib.pyplot as plt
 
@@ -39,10 +39,30 @@ def measure_latency(model, sample, n_runs=50):
             t0 = time.perf_counter(); model(sample); times.append((time.perf_counter()-t0)*1000)
     return {'mean_ms': float(np.mean(times)), 'std_ms': float(np.std(times))}
 
-def full_comparison(snn, ann, train_loader, test_loader, y_test, device='cpu'):
+def plot_error_distribution(train_errors, test_errors, model_name, save_path, threshold=None):
+    """Plot reconstruction error distributions for train and test sets."""
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.hist(train_errors, bins=50, alpha=0.6, label='Train (Normal)', color='steelblue', edgecolor='k')
+    ax.hist(test_errors, bins=50, alpha=0.6, label='Test (Normal + Anomaly)', color='coral', edgecolor='k')
+    if threshold is not None:
+        ax.axvline(threshold, color='red', linestyle='--', linewidth=2, label=f'Threshold ({threshold:.4f})')
+    ax.set_xlabel('Reconstruction Error (MSE)', fontsize=11)
+    ax.set_ylabel('Count', fontsize=11)
+    ax.set_title(f'{model_name} Reconstruction Error Distribution', fontsize=12, fontweight='bold')
+    ax.legend(fontsize=10)
+    ax.grid(alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=120, bbox_inches='tight')
+    plt.close()
+
+def full_comparison(snn, ann, train_loader, test_loader, y_test, device='cpu', save_dir=None):
     print("\n" + "="*55 + "\nENERGY-ACCURACY ANALYSIS\n" + "="*55)
     results = {}
     sample = next(iter(test_loader))[0][:32].to(device)
+    
+    if save_dir is not None:
+        os.makedirs(save_dir, exist_ok=True)
 
     for name, model in [('SNN', snn), ('ANN', ann)]:
         print(f"\n── {name} ──")
@@ -55,6 +75,12 @@ def full_comparison(snn, ann, train_loader, test_loader, y_test, device='cpu'):
         print(f"  F1: {det['f1']:.4f} | AUC: {det['auc_roc']:.4f}")
         print(f"  Precision: {det['precision']:.4f} | Recall: {det['recall']:.4f}")
         print(f"  Latency: {lat['mean_ms']:.2f}ms")
+        
+        # Plot error distribution if save_dir is provided
+        if save_dir is not None:
+            plot_error_distribution(train_errors, test_errors, name, 
+                                   os.path.join(save_dir, f"{name.lower()}_error_distribution.png"),
+                                   threshold=threshold)
 
         if name == 'SNN':
             ops = model.count_synaptic_operations(sample)
