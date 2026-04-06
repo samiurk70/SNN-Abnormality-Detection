@@ -130,11 +130,10 @@ snn-anomaly-detection/
 
 ---
 
-## White Paper
+## Paper Submission Status
 
-**Title:** *Spiking Neural Networks as Energy-Efficient Anomaly Detectors: A Pareto Optimisation Framework for Edge Deployment*
-
-Preprint: `[arXiv link — forthcoming]`
+Sumbitted to ACM conference ICONS2026
+**Title:** *T=8 or Not T=8: Pareto-Optimal Timestep Selection for Energy-Efficient SNN Anomaly Detection*
 
 ---
 
